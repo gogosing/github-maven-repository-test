@@ -8,8 +8,8 @@ cp -R ~/.m2/repository/me/gogosing/github-maven-repository-test ${local_github_m
 
 cd ${local_github_maven_repo}
 
-git status
-git add ./
-git status
+git init
+git add .
 git commit -m "github-maven-repository-test deploy"
-git push origin master
+git remote add origin "github.com:gogosing/maven-repo.git"
+git push -u origin main
