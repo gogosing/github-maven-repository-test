@@ -1,0 +1,76 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+apply plugin: 'java-library'
+
+ext {
+    lombokVersion = '1.18.22'
+}
+
+group = 'me.gogosing'
+version = '0.0.1-SNAPSHOT'
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+dependencies {
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.slf4j:slf4j-api:1.7.33"
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation "org.slf4j:slf4j-log4j12:1.7.33"
+    testImplementation "junit:junit:4.12"
+}
+
+jar { enabled = true }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'github-maven-repository-test'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'Github maven reporitory test name'
+                description = 'Github maven reporitory test name Description'
+                url = 'https://github.com/gogosing/github-maven-repository-test'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'JinBum'
+                        name = 'JinBum Jeong'
+                        email = 'gogosing@naver.com'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/gogosing/github-maven-repository-test'
+                }
+            }
+        }
+    }
+}
